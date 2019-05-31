@@ -1,0 +1,20 @@
+image: $CI_REGISTRY/cn-tsn/general/templates/latex
+
+lint:
+  image: golang:alpine
+  before_script:
+    - apk add --no-cache git
+    - go get github.com/errata-ai/vale
+  script:
+    - vale .
+  allow_failure: true
+
+pdf:
+  script:
+    - latexmk
+  only:
+    - master
+  artifacts:
+    paths:
+      - master.pdf
+    expire_in: 1 week
